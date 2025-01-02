@@ -32,6 +32,15 @@ class Virgilio:
             if word in verse:
                 verses_with_word.append(verse)
         return verses_with_word
+    
+    def get_longest_verse(self, canto_number):
+        canto_as_list = self.read_canto_lines(canto_number)
+        longest_verse = ""
+        for verse in canto_as_list:
+            if len(verse) > len(longest_verse):
+                longest_verse = verse
+        return longest_verse
+
 
 virgilio_instance = Virgilio("canti")
-print(virgilio_instance.get_verses_with_word(5, "Amor"))
+print("longest verse",virgilio_instance.get_longest_verse(26))
