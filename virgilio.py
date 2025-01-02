@@ -44,15 +44,28 @@ class Virgilio:
     def get_longest_canto(self):
         longest_canto = None
         longest_canto_length = 0
-        for i in range(1, 35):
-            canto_as_list = self.read_canto_lines(i)
+        for canto in range(1, 35):
+            canto_as_list = self.read_canto_lines(canto)
             current_canto_length = len(canto_as_list)
             if current_canto_length > longest_canto_length:
-                longest_canto = i
+                longest_canto = canto
                 longest_canto_length = current_canto_length
         return { "canto_number": longest_canto, "canto_len": longest_canto_length }
-
-
+    
+    def count_words(self, canto_number, words):
+        word_counter = {}
+        for word in words:
+            word_occurences = self.count_word(canto_number, word)
+            word_counter[word] = word_occurences
+        return word_counter
+    
+    def get_hell_verses(self):
+        hell_verses = []
+        for canto in range(1, 35):
+            canto_verses = self.read_canto_lines(canto)
+            for verse in canto_verses:
+                hell_verses.append(verse)
+        return hell_verses
 
 virgilio_instance = Virgilio("canti")
-print(virgilio_instance.get_longest_canto())
+print(len(virgilio_instance.get_hell_verses()))
