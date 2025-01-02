@@ -40,7 +40,19 @@ class Virgilio:
             if len(verse) > len(longest_verse):
                 longest_verse = verse
         return longest_verse
+    
+    def get_longest_canto(self):
+        longest_canto = None
+        longest_canto_length = 0
+        for i in range(1, 35):
+            canto_as_list = self.read_canto_lines(i)
+            current_canto_length = len(canto_as_list)
+            if current_canto_length > longest_canto_length:
+                longest_canto = i
+                longest_canto_length = current_canto_length
+        return { "canto_number": longest_canto, "canto_len": longest_canto_length }
+
 
 
 virgilio_instance = Virgilio("canti")
-print("longest verse",virgilio_instance.get_longest_verse(26))
+print(virgilio_instance.get_longest_canto())
