@@ -18,6 +18,12 @@ class Virgilio:
     def count_word(self, canto_number, word):
         canto_as_string = "".join(self.read_canto_lines(canto_number))
         return canto_as_string.count(word)
+    
+    def get_verse_with_word(self, canto_number, word):
+        canto_as_list = self.read_canto_lines(canto_number)
+        for verse in canto_as_list:
+            if word in verse:
+                return verse
 
 virgilio_instance = Virgilio("canti")
-print(virgilio_instance.count_word(5, "Amor"))
+print(virgilio_instance.get_verse_with_word(5, "Amor"))
