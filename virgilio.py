@@ -8,6 +8,11 @@ class Virgilio:
         file_path = os.path.join(self.directory, f"Canto_{canto_number}.txt")
         with open(file_path, "r", encoding="utf-8") as file:
             return file.readlines()
+        
+    def count_verses(self, canto_number):
+        return len(self.read_canto_lines(canto_number))
 
 virgilio_instance = Virgilio("canti")
-print(virgilio_instance.read_canto_lines(5))
+
+for i in range(1, 35):
+    print(i, virgilio_instance.count_verses(i))
