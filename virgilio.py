@@ -24,6 +24,14 @@ class Virgilio:
         for verse in canto_as_list:
             if word in verse:
                 return verse
+            
+    def get_verses_with_word(self, canto_number, word):
+        canto_as_list = self.read_canto_lines(canto_number)
+        verses_with_word = []
+        for verse in canto_as_list:
+            if word in verse:
+                verses_with_word.append(verse)
+        return verses_with_word
 
 virgilio_instance = Virgilio("canti")
-print(virgilio_instance.get_verse_with_word(5, "Amor"))
+print(virgilio_instance.get_verses_with_word(5, "Amor"))
