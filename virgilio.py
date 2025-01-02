@@ -14,8 +14,10 @@ class Virgilio:
     
     def count_tercets(self, canto_number):
         return int(self.count_verses(canto_number) / 3)
+    
+    def count_word(self, canto_number, word):
+        canto_as_string = "".join(self.read_canto_lines(canto_number))
+        return canto_as_string.count(word)
 
 virgilio_instance = Virgilio("canti")
-
-for i in range(1, 35):
-    print(i, virgilio_instance.count_verses(i), virgilio_instance.count_tercets(i))
+print(virgilio_instance.count_word(5, "Amor"))
