@@ -5,6 +5,9 @@ class Virgilio:
         self.directory = directory
 
     def read_canto_lines(self, canto_number, strip_lines = False, num_lines = None):
+        if not isinstance(canto_number, int):
+            raise TypeError("canto_number must be an integer")
+        
         file_path = os.path.join(self.directory, f"Canto_{canto_number}.txt")
         with open(file_path, "r", encoding="utf-8") as file:
             if num_lines is None:
@@ -86,4 +89,4 @@ class Virgilio:
         return total_length / total_verses
 
 virgilio_instance = Virgilio("canti")
-print(virgilio_instance.read_canto_lines(1, True, 10))
+print(virgilio_instance.read_canto_lines("uno"))
