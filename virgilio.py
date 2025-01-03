@@ -1,4 +1,5 @@
 import os
+import json
 
 class Virgilio:
     def __init__(self, directory):
@@ -78,6 +79,9 @@ class Virgilio:
         for word in words:
             word_occurences = self.count_word(canto_number, word)
             word_counter[word] = word_occurences
+        file_path = os.path.join(self.directory, "word_counts.json")
+        with open(file_path, "w", encoding="utf-8") as json_file:
+            json.dump(word_counter, json_file)
         return word_counter
     
     def get_hell_verses(self):
@@ -99,4 +103,4 @@ class Virgilio:
         return total_length / total_verses
 
 virgilio_instance = Virgilio("canti")
-print(virgilio_instance.read_canto_lines("uno", True, 10))
+print(virgilio_instance.count_words(5, ["Amor","amor","amore","Galeotto","luce", "Minosse", "Virgilio", "Paolo", "Francesca"]))
