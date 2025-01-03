@@ -4,11 +4,15 @@ class Virgilio:
     def __init__(self, directory):
         self.directory = directory
 
-    def read_canto_lines(self, canto_number):
+    def read_canto_lines(self, canto_number, strip_lines = False):
         file_path = os.path.join(self.directory, f"Canto_{canto_number}.txt")
         with open(file_path, "r", encoding="utf-8") as file:
-            return file.readlines()
-        
+            canto_lines = file.readlines()
+            if strip_lines:
+                return [line.strip() for line in canto_lines]
+            else:
+                return canto_lines
+
     def count_verses(self, canto_number):
         return len(self.read_canto_lines(canto_number))
     
@@ -63,8 +67,7 @@ class Virgilio:
         hell_verses = []
         for canto in range(1, 35):
             canto_verses = self.read_canto_lines(canto)
-            for verse in canto_verses:
-                hell_verses.append(verse)
+            hell_verses += canto_verses
         return hell_verses
     
     def count_hell_verses(self):
@@ -79,4 +82,4 @@ class Virgilio:
         return total_length / total_verses
 
 virgilio_instance = Virgilio("canti")
-print(virgilio_instance.get_hell_verse_mean_len())
+print(virgilio_instance.read_canto_lines(1, True))
