@@ -4,10 +4,14 @@ class Virgilio:
     def __init__(self, directory):
         self.directory = directory
 
-    def read_canto_lines(self, canto_number, strip_lines = False):
+    def read_canto_lines(self, canto_number, strip_lines = False, num_lines = None):
         file_path = os.path.join(self.directory, f"Canto_{canto_number}.txt")
         with open(file_path, "r", encoding="utf-8") as file:
-            canto_lines = file.readlines()
+            if num_lines is None:
+                canto_lines = file.readlines()
+            else:
+                canto_lines = [file.readline() for _ in range(num_lines)]
+
             if strip_lines:
                 return [line.strip() for line in canto_lines]
             else:
@@ -82,4 +86,4 @@ class Virgilio:
         return total_length / total_verses
 
 virgilio_instance = Virgilio("canti")
-print(virgilio_instance.read_canto_lines(1, True))
+print(virgilio_instance.read_canto_lines(1, True, 10))
