@@ -16,16 +16,19 @@ class Virgilio:
             raise self.CantoNotFoundError()
         
         file_path = os.path.join(self.directory, f"Canto_{canto_number}.txt")
-        with open(file_path, "r", encoding="utf-8") as file:
-            if num_lines is None:
-                canto_lines = file.readlines()
-            else:
-                canto_lines = [file.readline() for _ in range(num_lines)]
+        try:
+            with open(file_path, "r", encoding="utf-8") as file:
+                if num_lines is None:
+                    canto_lines = file.readlines()
+                else:
+                    canto_lines = [file.readline() for _ in range(num_lines)]
 
-            if strip_lines:
-                return [line.strip() for line in canto_lines]
-            else:
-                return canto_lines
+                if strip_lines:
+                    return [line.strip() for line in canto_lines]
+                else:
+                    return canto_lines
+        except Exception:
+            return f"error while opening { file_path }"
 
     def count_verses(self, canto_number):
         return len(self.read_canto_lines(canto_number))
