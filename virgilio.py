@@ -79,9 +79,16 @@ class Virgilio:
             if current_canto_length > longest_canto_length:
                 longest_canto = canto
                 longest_canto_length = current_canto_length
-        return {"canto_number": longest_canto, "canto_len": longest_canto_length}
+        return {
+            "canto_number": longest_canto,
+            "canto_len": longest_canto_length,
+        }
 
-    def count_words(self, canto_number: int, words: list[str]) -> dict[str, int]:
+    def count_words(
+        self,
+        canto_number: int,
+        words: list[str],
+    ) -> dict[str, int]:
         word_counter = {}
         for word in words:
             word_occurences = self.count_word(canto_number, word)
