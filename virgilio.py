@@ -1,21 +1,28 @@
 import os
 import json
+from typing import Optional, Union
+
 
 class Virgilio:
-    def __init__(self, directory):
+    def __init__(self, directory: str):
         self.directory = directory
 
     class CantoNotFoundError(Exception):
         def __init__(self):
             super().__init__("canto_number must be between 1 and 34.")
 
-    def read_canto_lines(self, canto_number, strip_lines = False, num_lines = None):
+    def read_canto_lines(
+        self,
+        canto_number: int,
+        strip_lines: bool = False,
+        num_lines: Optional[int] = None,
+    ) -> Union[list[str], str]:
         if not isinstance(canto_number, int):
             raise TypeError("canto_number must be an integer")
-        
+
         if canto_number < 1 or canto_number > 34:
             raise self.CantoNotFoundError()
-        
+
         file_path = os.path.join(self.directory, f"Canto_{canto_number}.txt")
         try:
             with open(file_path, "r", encoding="utf-8") as file:
@@ -29,41 +36,41 @@ class Virgilio:
                 else:
                     return canto_lines
         except Exception:
-            return f"error while opening { file_path }"
+            return f"error while opening {file_path}"
 
-    def count_verses(self, canto_number):
+    def count_verses(self, canto_number: int) -> int:
         return len(self.read_canto_lines(canto_number))
-    
-    def count_tercets(self, canto_number):
+
+    def count_tercets(self, canto_number: int) -> int:
         return int(self.count_verses(canto_number) / 3)
-    
-    def count_word(self, canto_number, word):
+
+    def count_word(self, canto_number: int, word: str) -> int:
         canto_as_string = "".join(self.read_canto_lines(canto_number))
         return canto_as_string.count(word)
-    
-    def get_verse_with_word(self, canto_number, word):
+
+    def get_verse_with_word(self, canto_number: int, word: str) -> str:
         canto_as_list = self.read_canto_lines(canto_number)
         for verse in canto_as_list:
             if word in verse:
                 return verse
-            
-    def get_verses_with_word(self, canto_number, word):
+
+    def get_verses_with_word(self, canto_number: int, word: str) -> list[str]:
         canto_as_list = self.read_canto_lines(canto_number)
         verses_with_word = []
         for verse in canto_as_list:
             if word in verse:
                 verses_with_word.append(verse)
         return verses_with_word
-    
-    def get_longest_verse(self, canto_number):
+
+    def get_longest_verse(self, canto_number: int) -> str:
         canto_as_list = self.read_canto_lines(canto_number)
         longest_verse = ""
         for verse in canto_as_list:
             if len(verse) > len(longest_verse):
                 longest_verse = verse
         return longest_verse
-    
-    def get_longest_canto(self):
+
+    def get_longest_canto(self) -> dict[str, int]:
         longest_canto = None
         longest_canto_length = 0
         for canto in range(1, 35):
@@ -72,9 +79,9 @@ class Virgilio:
             if current_canto_length > longest_canto_length:
                 longest_canto = canto
                 longest_canto_length = current_canto_length
-        return { "canto_number": longest_canto, "canto_len": longest_canto_length }
-    
-    def count_words(self, canto_number, words):
+        return {"canto_number": longest_canto, "canto_len": longest_canto_length}
+
+    def count_words(self, canto_number: int, words: list[str]) -> dict[str, int]:
         word_counter = {}
         for word in words:
             word_occurences = self.count_word(canto_number, word)
@@ -83,18 +90,18 @@ class Virgilio:
         with open(file_path, "w", encoding="utf-8") as json_file:
             json.dump(word_counter, json_file)
         return word_counter
-    
-    def get_hell_verses(self):
+
+    def get_hell_verses(self) -> list[str]:
         hell_verses = []
         for canto in range(1, 35):
             canto_verses = self.read_canto_lines(canto)
             hell_verses += canto_verses
         return hell_verses
-    
-    def count_hell_verses(self):
+
+    def count_hell_verses(self) -> int:
         return len(self.get_hell_verses())
-    
-    def get_hell_verse_mean_len(self):
+
+    def get_hell_verse_mean_len(self) -> float:
         total_length = 0
         hell_verses = self.get_hell_verses()
         for verse in hell_verses:
@@ -102,5 +109,5 @@ class Virgilio:
         total_verses = self.count_hell_verses()
         return total_length / total_verses
 
+
 virgilio_instance = Virgilio("canti")
-print(virgilio_instance.count_words(5, ["Amor","amor","amore","Galeotto","luce", "Minosse", "Virgilio", "Paolo", "Francesca"]))
