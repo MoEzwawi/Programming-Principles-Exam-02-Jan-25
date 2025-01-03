@@ -66,6 +66,17 @@ class Virgilio:
             for verse in canto_verses:
                 hell_verses.append(verse)
         return hell_verses
+    
+    def count_hell_verses(self):
+        return len(self.get_hell_verses())
+    
+    def get_hell_verse_mean_len(self):
+        total_length = 0
+        hell_verses = self.get_hell_verses()
+        for verse in hell_verses:
+            total_length += len(verse)
+        total_verses = self.count_hell_verses()
+        return total_length / total_verses
 
 virgilio_instance = Virgilio("canti")
-print(len(virgilio_instance.get_hell_verses()))
+print(virgilio_instance.get_hell_verse_mean_len())
