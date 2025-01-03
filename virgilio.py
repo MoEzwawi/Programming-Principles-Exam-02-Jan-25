@@ -4,9 +4,16 @@ class Virgilio:
     def __init__(self, directory):
         self.directory = directory
 
+    class CantoNotFoundError(Exception):
+        def __init__(self):
+            super().__init__("canto_number must be between 1 and 34.")
+
     def read_canto_lines(self, canto_number, strip_lines = False, num_lines = None):
         if not isinstance(canto_number, int):
             raise TypeError("canto_number must be an integer")
+        
+        if canto_number < 1 or canto_number > 34:
+            raise self.CantoNotFoundError()
         
         file_path = os.path.join(self.directory, f"Canto_{canto_number}.txt")
         with open(file_path, "r", encoding="utf-8") as file:
@@ -89,4 +96,4 @@ class Virgilio:
         return total_length / total_verses
 
 virgilio_instance = Virgilio("canti")
-print(virgilio_instance.read_canto_lines("uno"))
+print(virgilio_instance.read_canto_lines("uno", True, 10))
